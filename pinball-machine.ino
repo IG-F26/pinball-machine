@@ -41,9 +41,22 @@ void loop() {
 
 
 
-void updateLeftFlipper() {
+void updateLeftFlipper(bool isPressed) {
+    unsigned long timeAtCheck = millis();
+    bool isPressed = digitalRead(LEFT_BUTTON) == HIGH;
+    if (sensor.receiverSIG == HIGH) {
+        sensor.isTriggered = false;
+    } else if (sensor.isTriggered || timeAtCheck - sensor.timeOfPressed < DEBOUNCE_MS) {
+        return 0;
+    } else {
+        sensor.timeOfPressed = timeAtCheck;
+        sensor.isTriggered = true;
+        return sensor.pointsToGive;
+    }
 
-    bool buttonPressed = digitalRead(LEFT_BUTTON) == LOW;
+
+
+
 
     // Button was just pressed
     if (buttonPressed && !leftFlipperActive) {
@@ -75,7 +88,7 @@ void updateLeftFlipper() {
 
 void updateRightFlipper() {
 
-    bool buttonPressed = digitalRead(RIGHT_BUTTON) == LOW;
+    bool buttonPressed = digitalRead(RIGHT_BUTTON) == HIGH;
 
     // Button was just pressed
     if (buttonPressed && !rightFlipperActive) {
