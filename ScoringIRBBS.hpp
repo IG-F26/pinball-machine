@@ -1,0 +1,48 @@
+/* References:
+ * [https://learn.adafruit.com/ir-breakbeam-sensors/arduino] - Basic IR Breakbeam Sensor Functionality
+*/
+
+#pragma once
+#include <Arduino.h>
+#include <stdint.h>
+
+constexpr unsigned long DEBOUNCE_MS = 1000;
+
+/**
+ *  Struct stores which pin it tracks, the points it gives (varying between gameplay elements), if it has been tripped,
+ *  and time since it was last tripped
+ */
+struct ScoringIRBBS {
+    uint8_t receiverSIG;
+    int pointsToGive;
+    bool isTriggered;
+    unsigned long timeOfPressed;
+};
+
+// SETUP
+/**
+ * Creates a struct of the IR Break Beam Sensor for easy-to-reference names and controlling scoring logic
+ *
+ * @param rSIG Receiver's signal pin (the white wire)
+ * @param pointsToGive How many points this scoring method will give
+ * @return IRBreakBeamSensor object to reference each loop, plus storing if the sensor has been tripped and time since
+ * tripped
+ */
+ScoringIRBBS scoringIRBBSInitiate(uint8_t rSIG, int pointsToGive);
+
+// INTERMISSION/LOSS
+
+/*
+ * Still powered, just nothing checked during this time
+ */
+
+// GAMEPLAY
+
+/**
+ * Per loop, checks if the IR Breakbeam sensor has been tripped, giving the player points if so.
+ * A delay is added to prevent the sensor from tripping multiple times due to the same ball.
+ *
+ * @param sensor The sensor struct containing the signal pin to check
+ * @return Returns pointsToGive from the sensor struct if the sensor has just been tripped, and 0 otherwise
+ */
+int scoreCheck(ScoringIRBBS &sensor);
