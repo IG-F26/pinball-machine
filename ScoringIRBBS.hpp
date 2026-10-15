@@ -25,19 +25,17 @@ struct ScoringIRBBS {
  *
  * @param rSIG Receiver's signal pin (the white wire)
  * @param pointsToGive How many points this scoring method will give
- * @return IRBreakBeamSensor object to reference each loop, plus storing if the sensor has been tripped and time since
+ * @return IRBreakBeamSensor struct to reference each loop, plus storing if the sensor has been tripped and time since
  * tripped
  */
 ScoringIRBBS scoringIRBBSInitiate(uint8_t rSIG, int pointsToGive);
 
 // INTERMISSION/LOSS
-
 /*
  * Still powered, just nothing checked during this time
  */
 
 // GAMEPLAY
-
 /**
  * Per loop, checks if the IR Breakbeam sensor has been tripped, giving the player points if so.
  * A delay is added to prevent the sensor from tripping multiple times due to the same ball.

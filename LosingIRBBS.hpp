@@ -22,19 +22,17 @@ struct LosingIRBBS {
  * Creates a struct of the losing IR Break Beam Sensor
  *
  * @param rSIG Receiver's signal pin (the white wire)
- * @return IRBreakBeamSensor object to reference each loop, plus storing if the sensor has been tripped and time since
+ * @return IRBreakBeamSensor struct to reference each loop, plus storing if the sensor has been tripped and time since
  * tripped
  */
 LosingIRBBS losingIRBBSInitiate(uint8_t rSIG);
 
 // INTERMISSION/LOSS
-
 /*
  * Still powered, just nothing checked during this time
  */
 
 // GAMEPLAY
-
 /**
  * Per loop, checks if the IR Breakbeam sensor has been tripped, decrementing the # of balls in play if so.
  * A delay is added to prevent the sensor from tripping multiple times due to the same ball.

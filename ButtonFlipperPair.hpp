@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 // Maximum activation time to help protect the solenoids
-const unsigned long MAX_FLIPPER_TIME = 300; // milliseconds
+const unsigned long MAX_FLIPPER_TIME = 300;
 
 /**
  *  Struct stores which pin goes to the button and flipper,
@@ -22,13 +22,12 @@ struct ButtonFlipperPair {
  *
  * @param bI Pin where we read button signal
  * @param fO Pin where we power flipper
- * @return ButtonFlipperPair object to reference each loop, plus storing if
+ * @return ButtonFlipperPair struct to reference each loop, plus storing if
  * button has been activated and time since activation
  */
 ButtonFlipperPair buttonFlipperInitiate(uint8_t bI, uint8_t fO);
 
 // INTERMISSION/LOSS
-
 /*
  * Still powered, just nothing checked during this time
  */
