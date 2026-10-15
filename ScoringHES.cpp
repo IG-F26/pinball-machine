@@ -1,5 +1,6 @@
 #pragma once
 #include "ScoringHES.hpp"
+#include "Config.hpp"
 
 ScoringHES scoringHESInitiate(uint8_t rSIG, int pointsToGive) {
     return {rSIG, pointsToGive, false, 0};

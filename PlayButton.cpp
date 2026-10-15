@@ -1,5 +1,6 @@
 #pragma once
 #include "PlayButton.hpp"
+#include "Config.hpp"
 
 PlayButton playButtonInitiate(uint8_t bI) {
     return {bI, false, 0, 0};

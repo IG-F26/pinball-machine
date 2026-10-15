@@ -1,5 +1,6 @@
 #pragma once
 #include "ButtonFlipperPair.hpp"
+#include "Config.hpp"
 
 ButtonFlipperPair buttonFlipperInitiate(uint8_t bI, uint8_t fO) {
     return {bI, 0, false, fO};

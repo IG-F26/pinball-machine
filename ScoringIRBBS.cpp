@@ -1,5 +1,6 @@
 #pragma once
 #include "ScoringIRBBS.hpp"
+#include "Config.hpp"
 
 ScoringIRBBS scoringIRBBSInitiate(uint8_t rSIG, int pointsToGive){
     return { rSIG, pointsToGive, false, 0};

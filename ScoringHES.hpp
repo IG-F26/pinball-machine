@@ -2,8 +2,6 @@
 #include <Arduino.h>
 #include <stdint.h>
 
-constexpr unsigned long DEBOUNCE_MS = 1000;
-
 /**
  *  Struct stores which pin it tracks, the points it gives (varying between gameplay elements), if it has been tripped,
  *  and time since it was last tripped

@@ -1,5 +1,6 @@
 #pragma once
 #include "LosingIRBBS.hpp"
+#include "Config.hpp"
 
 LosingIRBBS losingIRBBSInitiate(uint8_t rSIG) {
     return {rSIG, false, 0};
