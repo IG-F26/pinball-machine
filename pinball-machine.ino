@@ -1,117 +1,87 @@
+// Power Switch
+// Elevator Motor - only uses GEN_PWR_OUT to always be on.
+// Play Button
+// Release Servo
+// Flipper Buttons
+// Flippers
+// Losing IRBBS
+// Losing Servo
+// Scoring Hole IRBBS
+// Spiral Ramp IRBBS
+// Hall Effect Sensor for "The Doors"
+// Microswitch for Spinner
+// Pop Bumpers
+// Sound System
+// Scoring LEDs
+// Score Display
 
-// Flipper buttons
-const int LEFT_BUTTON = 2;
-const int RIGHT_BUTTON = 3;
+#include "ButtonFlipperPair.hpp"
+#include "ScoringIRBBS.hpp"
+#include "LosingIRBBS.hpp"
+#include "PlayButton.hpp"
 
-// MOSFET/driver control pins
-const int LEFT_FLIPPER = 5;
-const int RIGHT_FLIPPER = 6;
+ScoringIRBBS scoringHoleSensorIRBBS1;
+// ScoringIRBBS scoringHoleSensor2;
+LosingIRBBS losingIRBBS;
+ButtonFlipperPair leftButtonFlipperPair;
+ButtonFlipperPair rightButtonFlipperPair;
+PlayButton playButton;
 
-// Maximum activation time to help protect the solenoids
-const unsigned long MAX_FLIPPER_TIME = 300; // milliseconds
+/*
+ * All pins are temporary and are subject to change.
+ */
+const uint8_t GENERAL_PWR = 3;
+const uint8_t SCORINGHOLESENSOR1_RECEIVER_PIN = 4;
+const uint8_t LOSINGSENSOR_RECEIVER_PIN = 5;
+const uint8_t LEFT_BUTTON = 6;
+const uint8_t RIGHT_BUTTON = 7;
+const uint8_t LEFT_FLIPPER = 8;
+const uint8_t RIGHT_FLIPPER = 9;
+const uint8_t PLAY_BUTTON = 10;
 
-unsigned long leftStartTime = 0;
-unsigned long rightStartTime = 0;
-
-bool leftFlipperActive = false;
-bool rightFlipperActive = false;
-
+/*
+ * Variables keeping track of the game and such.
+ */
+const uint8_t MAX_BALLS = 5;
+int8_t ballsInPlayRemaining = -1;
 
 void setup() {
-
-    // Buttons use Arduino's internal pull-up resistors
+    pinMode(GENERAL_PWR, OUTPUT);
+    pinMode(SCORINGHOLESENSOR1_RECEIVER_PIN, INPUT_PULLUP);
+    pinMode(LOSINGSENSOR_RECEIVER_PIN, INPUT_PULLUP);
     pinMode(LEFT_BUTTON, INPUT_PULLUP);
     pinMode(RIGHT_BUTTON, INPUT_PULLUP);
-
-    // Outputs control the MOSFET/driver
     pinMode(LEFT_FLIPPER, OUTPUT);
     pinMode(RIGHT_FLIPPER, OUTPUT);
+    pinMode(PLAY_BUTTON, INPUT_PULLUP);
 
-    // Make sure flippers start OFF
+    digitalWrite(GENERAL_PWR, HIGH);
     digitalWrite(LEFT_FLIPPER, LOW);
     digitalWrite(RIGHT_FLIPPER, LOW);
-}
 
+    scoringHoleSensorIRBBS1 = scoringIRBBSInitiate(SCORINGHOLESENSOR1_RECEIVER_PIN,100);
+    leftButtonFlipperPair = buttonFlipperInitiate(LEFT_BUTTON, LEFT_FLIPPER);
+    rightButtonFlipperPair = buttonFlipperInitiate(RIGHT_BUTTON, RIGHT_FLIPPER);
+    losingIRBBS = losingIRBBSInitiate(LOSINGSENSOR_RECEIVER_PIN);
+    playButton = playButtonInitiate(PLAY_BUTTON);
+
+}
 
 void loop() {
-
-    updateLeftFlipper();
-    updateRightFlipper();
-}
-
-
-
-void updateLeftFlipper(bool isPressed) {
-    unsigned long timeAtCheck = millis();
-    bool isPressed = digitalRead(LEFT_BUTTON) == HIGH;
-    if (sensor.receiverSIG == HIGH) {
-        sensor.isTriggered = false;
-    } else if (sensor.isTriggered || timeAtCheck - sensor.timeOfPressed < DEBOUNCE_MS) {
-        return 0;
+    if (ballsInPlayRemaining == -1) {
+        if (playButtonIsPressed(playButton)) {
+            ballsInPlayRemaining = MAX_BALLS;
+        }
+    } else if (ballsInPlayRemaining == 0) {
+        if (playButtonIsPressed(playButton)) {
+            ballsInPlayRemaining = MAX_BALLS;
+        }
     } else {
-        sensor.timeOfPressed = timeAtCheck;
-        sensor.isTriggered = true;
-        return sensor.pointsToGive;
-    }
-
-
-
-
-
-    // Button was just pressed
-    if (buttonPressed && !leftFlipperActive) {
-
-        digitalWrite(LEFT_FLIPPER, HIGH);
-
-        leftStartTime = millis();
-
-        leftFlipperActive = true;
-    }
-
-    // Button released
-    if (!buttonPressed) {
-
-        digitalWrite(LEFT_FLIPPER, LOW);
-
-        leftFlipperActive = false;
-    }
-
-    // Safety timeout
-    if (leftFlipperActive &&
-        millis() - leftStartTime >= MAX_FLIPPER_TIME) {
-
-        digitalWrite(LEFT_FLIPPER, LOW);
-    }
-}
-
-
-
-void updateRightFlipper() {
-
-    bool buttonPressed = digitalRead(RIGHT_BUTTON) == HIGH;
-
-    // Button was just pressed
-    if (buttonPressed && !rightFlipperActive) {
-
-        digitalWrite(RIGHT_FLIPPER, HIGH);
-
-        rightStartTime = millis();
-
-        rightFlipperActive = true;
-    }
-
-    // Button released
-    if (!buttonPressed) {
-
-        digitalWrite(RIGHT_FLIPPER, LOW);
-
-        rightFlipperActive = false;
-    }
-
-    // Safety timeout
-    if (rightFlipperActive &&
-        millis() - rightStartTime >= MAX_FLIPPER_TIME) {
-
-        digitalWrite(RIGHT_FLIPPER, LOW);
+        if (resetButtonIsPressed(playButton)) {
+            ballsInPlayRemaining = 0;
+        }
+        buttonFlipperCheck(leftButtonFlipperPair);
+        buttonFlipperCheck(rightButtonFlipperPair);
+        ballsInPlayRemaining -= lossCheck(losingIRBBS);
     }
 }
