@@ -16,7 +16,7 @@ void buttonFlipperCheck(ButtonFlipperPair &buttonFlipperPair) {
         digitalWrite(buttonFlipperPair.flipperOutput, HIGH);
         buttonFlipperPair.buttonTimeOfPressed = timeAtCheck;
         buttonFlipperPair.flipperIsTriggered = true;
-    } else if (timeAtCheck - buttonFlipperPair.timeOfPressed >= MAX_FLIPPER_TIME) {
+    } else if (timeAtCheck - buttonFlipperPair.buttonTimeOfPressed >= MAX_FLIPPER_TIME) {
         digitalWrite(buttonFlipperPair.flipperOutput, LOW);
     }
 }

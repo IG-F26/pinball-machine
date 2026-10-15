@@ -30,7 +30,7 @@ PlayButton playButton;
 /*
  * All pins are temporary and are subject to change.
  */
-const uint8_t GENERAL_PWR = 3;
+// const uint8_t GENERAL_PWR = 3; // Not needed if we use the 5V pin for general power
 const uint8_t SCORINGHOLESENSOR1_RECEIVER_PIN = 4;
 const uint8_t LOSINGSENSOR_RECEIVER_PIN = 5;
 const uint8_t LEFT_BUTTON = 6;
@@ -45,8 +45,15 @@ const uint8_t PLAY_BUTTON = 10;
 const uint8_t MAX_BALLS = 5;
 int8_t ballsInPlayRemaining = -1;
 
+/*
+ * Variables keeping track of game score and such.
+ */
+unsigned int highScore = 0;
+unsigned int currentScore = 0;
+
+
 void setup() {
-    pinMode(GENERAL_PWR, OUTPUT);
+    // pinMode(GENERAL_PWR, OUTPUT);
     pinMode(SCORINGHOLESENSOR1_RECEIVER_PIN, INPUT_PULLUP);
     pinMode(LOSINGSENSOR_RECEIVER_PIN, INPUT_PULLUP);
     pinMode(LEFT_BUTTON, INPUT_PULLUP);
@@ -55,7 +62,7 @@ void setup() {
     pinMode(RIGHT_FLIPPER, OUTPUT);
     pinMode(PLAY_BUTTON, INPUT_PULLUP);
 
-    digitalWrite(GENERAL_PWR, HIGH);
+    // digitalWrite(GENERAL_PWR, HIGH);
     digitalWrite(LEFT_FLIPPER, LOW);
     digitalWrite(RIGHT_FLIPPER, LOW);
 
@@ -73,13 +80,20 @@ void loop() {
             ballsInPlayRemaining = MAX_BALLS;
         }
     } else if (ballsInPlayRemaining == 0) {
+        if (currentScore > 0 && currentScore > highScore) {
+            highScore = currentScore;
+            currentScore = 0;
+        }
         if (playButtonIsPressed(playButton)) {
             ballsInPlayRemaining = MAX_BALLS;
         }
     } else {
         if (resetButtonIsPressed(playButton)) {
+            // option to new high score using same code above
+            currentScore = 0;
             ballsInPlayRemaining = 0;
         }
+        currentScore += scoreCheck(scoringHoleSensorIRBBS1);
         buttonFlipperCheck(leftButtonFlipperPair);
         buttonFlipperCheck(rightButtonFlipperPair);
         ballsInPlayRemaining -= lossCheck(losingIRBBS);
