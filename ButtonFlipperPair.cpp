@@ -2,7 +2,7 @@
 #include "ButtonFlipperPair.hpp"
 
 ButtonFlipperPair buttonFlipperInitiate(uint8_t bI, uint8_t fO) {
-    return {.buttonInput = bI, .buttonTimeOfPressed = 0, .flipperIsTriggered = false, .flipperOutput = fO};
+    return {bI, 0, false, fO};
 }
 
 void buttonFlipperCheck(ButtonFlipperPair &buttonFlipperPair) {

@@ -2,7 +2,7 @@
 #include "LosingIRBBS.hpp"
 
 LosingIRBBS losingIRBBSInitiate(uint8_t rSIG) {
-    return {.receiverSIG = rSIG, .isTriggered = false, .timeOfPressed = 0};
+    return {rSIG, false, 0};
 }
 
 uint8_t lossCheck(LosingIRBBS &sensor) {

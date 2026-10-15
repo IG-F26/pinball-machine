@@ -2,7 +2,7 @@
 #include "ScoringIRBBS.hpp"
 
 ScoringIRBBS scoringIRBBSInitiate(uint8_t rSIG, int pointsToGive){
-    return {.receiverSIG = rSIG, .pointsToGive = pointsToGive, .isTriggered = false, .timeOfPressed = 0};
+    return { rSIG, pointsToGive, false, 0};
 }
 
 int scoreCheck(ScoringIRBBS &sensor) {
