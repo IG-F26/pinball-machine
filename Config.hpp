@@ -12,6 +12,13 @@ const uint8_t LEFT_FLIPPER = 8;
 const uint8_t RIGHT_FLIPPER = 9;
 const uint8_t PLAY_BUTTON = 10;
 const uint8_t LED_DATA_PIN = 11;
+const uint8_t RELEASE_SERVO_OUT = 12;
+const uint8_t LED1 = 13;
+const uint8_t LED2 = 14;
+const uint8_t LED3 = 15;
+const uint8_t LED4 = 16;
+
+
 
 // Maximum activation time to help protect the solenoids
 const unsigned long MAX_FLIPPER_TIME = 50;
