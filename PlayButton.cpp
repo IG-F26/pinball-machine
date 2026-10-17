@@ -1,8 +1,9 @@
 #pragma once
 #include "PlayButton.hpp"
+#include "Config.hpp"
 
 PlayButton playButtonInitiate(uint8_t bI) {
-    return {.buttonInput = bI, .buttonPrevPressed = false, .buttonTimeOfPressed = 0, .cooldownTime = 0};
+    return {bI, false, 0, 0};
 }
 
 bool playButtonIsPressed(PlayButton &pButton) {

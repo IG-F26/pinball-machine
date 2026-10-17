@@ -6,8 +6,6 @@
 #include <Arduino.h>
 #include <stdint.h>
 
-constexpr unsigned long DEBOUNCE_MS = 1000;
-
 /**
  *  Struct stores which pin it tracks, if it has been tripped, and time since it was last tripped
  */

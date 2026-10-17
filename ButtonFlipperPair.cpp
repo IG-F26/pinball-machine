@@ -1,8 +1,9 @@
 #pragma once
 #include "ButtonFlipperPair.hpp"
+#include "Config.hpp"
 
 ButtonFlipperPair buttonFlipperInitiate(uint8_t bI, uint8_t fO) {
-    return {.buttonInput = bI, .buttonTimeOfPressed = 0, .flipperIsTriggered = false, .flipperOutput = fO};
+    return {bI, 0, false, fO};
 }
 
 void buttonFlipperCheck(ButtonFlipperPair &buttonFlipperPair) {
@@ -16,7 +17,7 @@ void buttonFlipperCheck(ButtonFlipperPair &buttonFlipperPair) {
         digitalWrite(buttonFlipperPair.flipperOutput, HIGH);
         buttonFlipperPair.buttonTimeOfPressed = timeAtCheck;
         buttonFlipperPair.flipperIsTriggered = true;
-    } else if (timeAtCheck - buttonFlipperPair.timeOfPressed >= MAX_FLIPPER_TIME) {
+    } else if (timeAtCheck - buttonFlipperPair.buttonTimeOfPressed >= MAX_FLIPPER_TIME) {
         digitalWrite(buttonFlipperPair.flipperOutput, LOW);
     }
 }
