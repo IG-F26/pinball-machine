@@ -1,0 +1,70 @@
+
+#pragma once
+#include "IRBreakBeamSensor.hpp"
+
+const int buzzerPin = 8;
+
+// Initialize sensor
+IRBreakBeamSensor initiate(
+    uint8_t tGND,
+    uint8_t tPWR,
+    uint8_t rGND,
+    uint8_t rPWR,
+    uint8_t rSIG,
+    uint8_t pointsToGive
+) {
+    pinMode(tGND, OUTPUT);
+    pinMode(tPWR, OUTPUT);
+    pinMode(rGND, OUTPUT);
+    pinMode(rPWR, OUTPUT);
+    pinMode(rSIG, INPUT_PULLUP);
+
+    digitalWrite(tGND, LOW);
+    digitalWrite(tPWR, HIGH);
+    digitalWrite(rGND, LOW);
+    digitalWrite(rPWR, HIGH);
+
+    return {tGND, tPWR, rGND, rPWR,
+            rSIG, pointsToGive, false, 0};
+}
+
+// Scoring sound
+void gainPointsSound() {
+    tone(buzzerPin, 1200, 80);
+    delay(100);
+
+    tone(buzzerPin, 1600, 80);
+    delay(100);
+
+    tone(buzzerPin, 2000, 150);
+    delay(170);
+}
+
+// Check whether ball breaks sensor beam
+int scoreCheck(IRBreakBeamSensor &sensor) {
+
+    unsigned long timeAtCheck = millis();
+
+    int sensorState = digitalRead(sensor.receiverSIG);
+
+    // Beam is not broken
+    if (sensorState == HIGH) {
+        sensor.isTriggered = false;
+        return 0;
+    }
+
+    // Prevent repeated scoring
+    if (sensor.isTriggered ||
+        timeAtCheck - sensor.timeOfPressed < DEBOUNCE_MS) {
+        return 0;
+    }
+
+    // Beam broken: award points
+    sensor.timeOfPressed = timeAtCheck;
+    sensor.isTriggered = true;
+
+    // Play scoring sound
+    gainPointsSound();
+
+    return sensor.pointsToGive;
+}
