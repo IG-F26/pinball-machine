@@ -17,6 +17,7 @@ const uint8_t LED1 = 13;
 const uint8_t LED2 = 14;
 const uint8_t LED3 = 15;
 const uint8_t LED4 = 16;
+const uint8_t BUZZER_PIN = 17;
 
 
 
