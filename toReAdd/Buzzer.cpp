@@ -1,6 +1,6 @@
 #pragma once
 
-#include "pitches.h"
+#include "../pitches.h"
 #include <Arduino.h>
 #include <stdint.h>
 

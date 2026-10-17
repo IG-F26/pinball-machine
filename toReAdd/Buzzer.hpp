@@ -1,6 +1,6 @@
 #pragma once
 
-#include "pitches.h"
+#include "../pitches.h"
 #include <Arduino.h>
 #include <stdint.h>
 
@@ -95,11 +95,6 @@ enum SoundType {
   GAME_OVER,
   BACKGROUND
 };
-
-const int* currentNotes = nullptr;
-const int* currentDurations = nullptr;
-
-const int melodySize = sizeof(melody) / sizeof(melody[0]);
 
 unsigned long getNoteDuration();
 
