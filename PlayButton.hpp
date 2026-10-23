@@ -2,12 +2,6 @@
 #include <Arduino.h>
 #include <stdint.h>
 
-// Minimum time to hold the play button down during gameplay to reset game
-const unsigned long MIN_RESET_TIME = 3000;
-
-// When game stops through initial start-up, forced reset, or loss
-const unsigned long COOLDOWN_TIME = 5000;
-
 /**
  *  Struct stores which pin is used for the button and when it was last pressed.
  */

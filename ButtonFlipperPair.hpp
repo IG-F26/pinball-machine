@@ -2,9 +2,6 @@
 #include <Arduino.h>
 #include <stdint.h>
 
-// Maximum activation time to help protect the solenoids
-const unsigned long MAX_FLIPPER_TIME = 300;
-
 /**
  *  Struct stores which pin goes to the button and flipper,
  *  if button has been activated, and time since button's last activation
